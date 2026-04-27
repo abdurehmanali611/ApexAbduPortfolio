@@ -26,7 +26,6 @@ export const metadata: Metadata = {
   },
   description:
     "Full‑stack web & mobile app developer building performant, modern systems with Next.js, Django, GraphQL, Prisma, and React Native.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   openGraph: {
     title: "Abdurehman Ali — Full‑Stack Developer",
     description:
