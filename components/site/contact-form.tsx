@@ -14,7 +14,7 @@ import { contactSchema, type ContactInput } from "@/lib/validations";
 const initialState: ContactState = { ok: false, message: "" };
 
 export function ContactForm() {
-  const [state, formAction, pending] = useActionState(sendContactEmail, initialState);
+  const [state, dispatch, pending] = useActionState(sendContactEmail, initialState);
   const form = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -24,8 +24,21 @@ export function ContactForm() {
     },
   });
 
+  React.useEffect(() => {
+    if (state.ok) {
+      form.reset();
+    }
+  }, [state.ok, form]);
+
   return (
-    <form action={formAction} className="space-y-5" onSubmit={form.handleSubmit(() => {})}>
+    <form
+      className="space-y-5"
+      onSubmit={form.handleSubmit((_values, event) => {
+        const target = event?.target as HTMLFormElement | undefined;
+        if (!target) return;
+        dispatch(new FormData(target));
+      })}
+    >
       <div className="space-y-2">
         <p className="text-sm font-semibold">Send a message</p>
         <p className="text-sm text-muted-foreground">
